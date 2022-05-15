@@ -20,3 +20,7 @@ const WhatsappContactsManager = NativeModules.WhatsappContactsManager
 export function multiply(a: number, b: number): Promise<number> {
   return WhatsappContactsManager.multiply(a, b);
 }
+
+export function getAll(): Promise<any> {
+  return WhatsappContactsManager.getAll();
+}
