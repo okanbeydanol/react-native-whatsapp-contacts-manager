@@ -34,8 +34,7 @@ android {
         }
     }
     lintOptions {
-        disable 'GradleCompatible',
-        abortOnError false
+        disable 'GradleCompatible'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

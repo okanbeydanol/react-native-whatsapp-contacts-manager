@@ -152,9 +152,9 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
 
     while (cursor != null && cursor.moveToNext()) {
 
-      int columnIndexContactId = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID);
-      int columnIndexId = cursor.getColumnIndex(ContactsContract.Data._ID);
-      int columnIndexRawContactId = cursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID);
+      int columnIndexContactId = cursor.getColumnIndexOrThrow(ContactsContract.Data.CONTACT_ID);
+      int columnIndexId = cursor.getColumnIndexOrThrow(ContactsContract.Data._ID);
+      int columnIndexRawContactId = cursor.getColumnIndexOrThrow(ContactsContract.Data.RAW_CONTACT_ID);
       String contactId;
       String id;
       String rawContactId;
@@ -184,15 +184,15 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
       }
 
       Contact contact = map.get(contactId);
-      String mimeType = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.MIMETYPE));
-      String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+      String mimeType = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Data.MIMETYPE));
+      String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
       contact.rawContactId = rawContactId;
       if (!TextUtils.isEmpty(name) && TextUtils.isEmpty(contact.displayName)) {
         contact.displayName = name;
       }
 
       if (TextUtils.isEmpty(contact.photoUri)) {
-        String rawPhotoURI = cursor.getString(cursor.getColumnIndex(Contactables.PHOTO_URI));
+        String rawPhotoURI = cursor.getString(cursor.getColumnIndexOrThrow(Contactables.PHOTO_URI));
         if (!TextUtils.isEmpty(rawPhotoURI)) {
           contact.photoUri = rawPhotoURI;
           contact.hasPhoto = true;
@@ -201,23 +201,23 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
 
       switch (mimeType) {
         case StructuredName.CONTENT_ITEM_TYPE:
-          contact.givenName = cursor.getString(cursor.getColumnIndex(StructuredName.GIVEN_NAME));
-          if (cursor.getString(cursor.getColumnIndex(StructuredName.MIDDLE_NAME)) != null) {
-            contact.middleName = cursor.getString(cursor.getColumnIndex(StructuredName.MIDDLE_NAME));
+          contact.givenName = cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.GIVEN_NAME));
+          if (cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.MIDDLE_NAME)) != null) {
+            contact.middleName = cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.MIDDLE_NAME));
           } else {
             contact.middleName = "";
           }
-          if (cursor.getString(cursor.getColumnIndex(StructuredName.FAMILY_NAME)) != null) {
-            contact.familyName = cursor.getString(cursor.getColumnIndex(StructuredName.FAMILY_NAME));
+          if (cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.FAMILY_NAME)) != null) {
+            contact.familyName = cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.FAMILY_NAME));
           } else {
             contact.familyName = "";
           }
-          contact.prefix = cursor.getString(cursor.getColumnIndex(StructuredName.PREFIX));
-          contact.suffix = cursor.getString(cursor.getColumnIndex(StructuredName.SUFFIX));
+          contact.prefix = cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.PREFIX));
+          contact.suffix = cursor.getString(cursor.getColumnIndexOrThrow(StructuredName.SUFFIX));
           break;
         case Phone.CONTENT_ITEM_TYPE:
-          String phoneNumber = cursor.getString(cursor.getColumnIndex(Phone.NUMBER));
-          int phoneType = cursor.getInt(cursor.getColumnIndex(Phone.TYPE));
+          String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(Phone.NUMBER));
+          int phoneType = cursor.getInt(cursor.getColumnIndexOrThrow(Phone.TYPE));
 
           if (!TextUtils.isEmpty(phoneNumber)) {
             String label;
@@ -238,8 +238,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
           }
           break;
         case Email.CONTENT_ITEM_TYPE:
-          String email = cursor.getString(cursor.getColumnIndex(Email.ADDRESS));
-          int emailType = cursor.getInt(cursor.getColumnIndex(Email.TYPE));
+          String email = cursor.getString(cursor.getColumnIndexOrThrow(Email.ADDRESS));
+          int emailType = cursor.getInt(cursor.getColumnIndexOrThrow(Email.TYPE));
           if (!TextUtils.isEmpty(email)) {
             String label;
             switch (emailType) {
@@ -253,8 +253,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
                 label = "mobile";
                 break;
               case Email.TYPE_CUSTOM:
-                if (cursor.getString(cursor.getColumnIndex(Email.LABEL)) != null) {
-                  label = cursor.getString(cursor.getColumnIndex(Email.LABEL)).toLowerCase();
+                if (cursor.getString(cursor.getColumnIndexOrThrow(Email.LABEL)) != null) {
+                  label = cursor.getString(cursor.getColumnIndexOrThrow(Email.LABEL)).toLowerCase();
                 } else {
                   label = "";
                 }
@@ -266,8 +266,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
           }
           break;
         case Website.CONTENT_ITEM_TYPE:
-          String url = cursor.getString(cursor.getColumnIndex(Website.URL));
-          int websiteType = cursor.getInt(cursor.getColumnIndex(Website.TYPE));
+          String url = cursor.getString(cursor.getColumnIndexOrThrow(Website.URL));
+          int websiteType = cursor.getInt(cursor.getColumnIndexOrThrow(Website.TYPE));
           if (!TextUtils.isEmpty(url)) {
             String label;
             switch (websiteType) {
@@ -290,8 +290,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
                 label = "ftp";
                 break;
               case Website.TYPE_CUSTOM:
-                if (cursor.getString(cursor.getColumnIndex(Website.LABEL)) != null) {
-                  label = cursor.getString(cursor.getColumnIndex(Website.LABEL)).toLowerCase();
+                if (cursor.getString(cursor.getColumnIndexOrThrow(Website.LABEL)) != null) {
+                  label = cursor.getString(cursor.getColumnIndexOrThrow(Website.LABEL)).toLowerCase();
                 } else {
                   label = "";
                 }
@@ -303,8 +303,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
           }
           break;
         case Im.CONTENT_ITEM_TYPE:
-          String username = cursor.getString(cursor.getColumnIndex(Im.DATA));
-          int imType = cursor.getInt(cursor.getColumnIndex(Im.PROTOCOL));
+          String username = cursor.getString(cursor.getColumnIndexOrThrow(Im.DATA));
+          int imType = cursor.getInt(cursor.getColumnIndexOrThrow(Im.PROTOCOL));
           if (!TextUtils.isEmpty(username)) {
             String label;
             switch (imType) {
@@ -336,8 +336,8 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
                 label = "NetMeeting";
                 break;
               case Im.PROTOCOL_CUSTOM:
-                if (cursor.getString(cursor.getColumnIndex(Im.CUSTOM_PROTOCOL)) != null) {
-                  label = cursor.getString(cursor.getColumnIndex(Im.CUSTOM_PROTOCOL));
+                if (cursor.getString(cursor.getColumnIndexOrThrow(Im.CUSTOM_PROTOCOL)) != null) {
+                  label = cursor.getString(cursor.getColumnIndexOrThrow(Im.CUSTOM_PROTOCOL));
                 } else {
                   label = "";
                 }
@@ -349,18 +349,18 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
           }
           break;
         case Organization.CONTENT_ITEM_TYPE:
-          contact.company = cursor.getString(cursor.getColumnIndex(Organization.COMPANY));
-          contact.jobTitle = cursor.getString(cursor.getColumnIndex(Organization.TITLE));
-          contact.department = cursor.getString(cursor.getColumnIndex(Organization.DEPARTMENT));
+          contact.company = cursor.getString(cursor.getColumnIndexOrThrow(Organization.COMPANY));
+          contact.jobTitle = cursor.getString(cursor.getColumnIndexOrThrow(Organization.TITLE));
+          contact.department = cursor.getString(cursor.getColumnIndexOrThrow(Organization.DEPARTMENT));
           break;
         case StructuredPostal.CONTENT_ITEM_TYPE:
           contact.postalAddresses.add(new Contact.PostalAddressItem(cursor));
           break;
         case Event.CONTENT_ITEM_TYPE:
-          int eventType = cursor.getInt(cursor.getColumnIndex(Event.TYPE));
+          int eventType = cursor.getInt(cursor.getColumnIndexOrThrow(Event.TYPE));
           if (eventType == Event.TYPE_BIRTHDAY) {
             try {
-              String birthday = cursor.getString(cursor.getColumnIndex(Event.START_DATE)).replace("--", "");
+              String birthday = cursor.getString(cursor.getColumnIndexOrThrow(Event.START_DATE)).replace("--", "");
               String[] yearMonthDay = birthday.split("-");
               List<String> yearMonthDayList = Arrays.asList(yearMonthDay);
 
@@ -388,7 +388,7 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
           }
           break;
         case Note.CONTENT_ITEM_TYPE:
-          contact.note = cursor.getString(cursor.getColumnIndex(Note.NOTE));
+          contact.note = cursor.getString(cursor.getColumnIndexOrThrow(Note.NOTE));
           break;
       }
     }
@@ -560,19 +560,19 @@ public class WhatsappContactsManagerModule extends ReactContextBaseJavaModule im
       }
 
       private void putString(Cursor cursor, String key, String androidKey) {
-        final String value = cursor.getString(cursor.getColumnIndex(androidKey));
+        final String value = cursor.getString(cursor.getColumnIndexOrThrow(androidKey));
         if (!TextUtils.isEmpty(value))
           map.putString(key, value);
       }
 
       static String getLabel(Cursor cursor) {
-        switch (cursor.getInt(cursor.getColumnIndex(StructuredPostal.TYPE))) {
+        switch (cursor.getInt(cursor.getColumnIndexOrThrow(StructuredPostal.TYPE))) {
           case StructuredPostal.TYPE_HOME:
             return "home";
           case StructuredPostal.TYPE_WORK:
             return "work";
           case StructuredPostal.TYPE_CUSTOM:
-            final String label = cursor.getString(cursor.getColumnIndex(StructuredPostal.LABEL));
+            final String label = cursor.getString(cursor.getColumnIndexOrThrow(StructuredPostal.LABEL));
             return label != null ? label : "";
         }
         return "other";
