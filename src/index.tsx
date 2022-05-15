@@ -27,6 +27,7 @@ export interface EmailAddress {
 }
 
 export interface PhoneNumber {
+  id: string;
   label: string;
   number: string;
 }
