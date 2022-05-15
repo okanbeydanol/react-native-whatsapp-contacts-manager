@@ -1,6 +1,6 @@
 {
   "name": "react-native-whatsapp-contacts-manager",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Whatsapp Contacts",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
