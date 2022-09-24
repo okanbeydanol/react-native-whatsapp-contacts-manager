@@ -32,10 +32,6 @@ jobs:
           ssh://git@github.com/
       - name: Envinfo
         run: npx envinfo
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.17.0
       - name: Install React Native
         run: npm uninstall -g react-native-cli @react-native-community/cli
       - name: Removing node_modules
@@ -57,5 +53,5 @@ jobs:
       - name: Npm packages is installing in example
         run: (cd example && yarn install)
       - name: Refresh example android dependencies
-        run: (cd example && (cd android && ./gradlew clean) && (cd android && gradle cleanBuildCache) && (cd android && ./gradlew assembleRelease))
+        run: (cd example && (cd android && ./gradlew clean) && (cd android && gradle cleanBuildCache) && (cd android && ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a ))
 
