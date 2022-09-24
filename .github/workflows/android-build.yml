@@ -41,8 +41,6 @@ jobs:
           node-version: 16.17.0
       - name: Install React Native
         run:  npm uninstall -g react-native-cli @react-native-community/cli
-      - name: Gradlew build
-        run: ./gradlew build --no-daemon
       - name: Removing node_modules
         run: rm -rf node_modules
       - name: Removing package-lock.json
@@ -53,6 +51,8 @@ jobs:
         run: yarn install
       - name: Clean android build cache
         run:  (cd android && gradle cleanBuildCache)
+      - name: Gradlew build
+        run: (cd android && ./gradlew build --no-daemon)
       - name: Removing example node_modules
         run: (cd example && rm -rf node_modules)
       - name: Removing example package-lock.json
