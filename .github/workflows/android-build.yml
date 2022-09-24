@@ -55,8 +55,9 @@ jobs:
         run: (cd example && rm -rf package-lock.json)
       - name: Npm cache verifying
         run: (cd example && npm cache verify)
-      - name: Clear gradle cache
+      - name: Clean example android build cache
         run: (cd example && (cd android && ./gradlew --stop) && rm -rf ~/.gradle/caches/ android/app/build)
       - name: Npm packages is installing in example
         run: (cd example && yarn install)
-
+      - name: Refresh example android dependencies
+        run: (cd example && (cd android && ./gradlew clean) && (cd android && gradle cleanBuildCache) && (cd android && ./gradlew build --refresh-dependencies))
