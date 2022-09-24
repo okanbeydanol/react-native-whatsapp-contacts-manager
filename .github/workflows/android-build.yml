@@ -35,14 +35,14 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Gradlew build
-        run: ./gradlew build --no-daemon
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16.17.0
       - name: Install React Native
         run:  npm uninstall -g react-native-cli @react-native-community/cli
+      - name: Gradlew build
+        run: ./gradlew build --no-daemon
       - name: Removing node_modules
         run: rm -rf node_modules
       - name: Removing package-lock.json
