@@ -28,10 +28,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - shell: bash
-        run: mkdir toolchains
       - name: specify NDK
-        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;25.1.8937393"
+        run: sudo echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;25.1.8937393"
       - name: Reconfigure git to use HTTP authentication
         run: >
           git config --global url."https://github.com/".insteadOf
@@ -39,9 +37,32 @@ jobs:
       - name: Setup java
       - uses: actions/setup-java@v3
         with:
+          distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16.17.0
-
+      - name: Removing node_modules
+        run: rm -rf node_modules
+      - name: Removing package-lock.json
+        run: rm -rf package-lock.json
+      - name: Npm cache verifying
+        run: npm cache verify
+      - name: Npm packages is installing
+        run: yarn install
+      - name: Clean android build cache
+        run: (cd android && gradle cleanBuildCache)
+      - name: Removing example node_modules
+        run: (cd example && rm -rf node_modules)
+      - name: Removing example package-lock.json
+        run: (cd example && rm -rf package-lock.json)
+      - name: Npm cache verifying
+        run: (cd example && npm cache verify)
+      - name: Clean example android build cache
+        run: (cd example && (cd android && ./gradlew --stop) && rm -rf ~/.gradle/caches/ android/app/build)
+      - name: Npm packages is installing in example
+        run: (cd example && yarn install)
+      - name: Refresh example android dependencies
+        run: (cd example && (cd android && ./gradlew clean) && (cd android && gradle cleanBuildCache) && (cd android && ./gradlew build --refresh-dependencies))
