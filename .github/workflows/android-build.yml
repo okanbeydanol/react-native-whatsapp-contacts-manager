@@ -30,8 +30,13 @@ jobs:
       - shell: bash
         run: mkdir toolchains
       - uses: nttld/setup-ndk@v1
+        id: setup-ndk
         with:
           ndk-version: r21e
+          add-to-path: false
+      - run: ./build.sh
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
       - name: Reconfigure git to use HTTP authentication
         run: >
           git config --global url."https://github.com/".insteadOf
@@ -45,7 +50,7 @@ jobs:
         with:
           node-version: 16.17.0
       - name: Install React Native
-        run:  build/tools/make-standalone-toolchain.sh --toolchain=arm-linux-androideabi-4.8 --platform=android-19 --install-dir=../toolchain
+        run:  wget https://dl.google.com/android/repository/android-ndk-r20-linux-x86_64.zip &&   unzip android-ndk-r20-linux-x86_64.zip
       - name: Install React Native
         run:  npm uninstall -g react-native-cli @react-native-community/cli
       - name: Removing node_modules
