@@ -1,3 +1,4 @@
+
 # This is a basic workflow to help you get started with Actions
 
 name: CI
@@ -31,7 +32,7 @@ jobs:
         run: mkdir toolchains
       - name: specify NDK
         run: |
-          sudo /usr/local/lib/android/tools/bin/sdkmanager --install "ndk;25.1.8937393" --sdk_root=${ANDROID_SDK_ROOT}
+          sudo echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;25.1.8937393" --sdk_root=${ANDROID_SDK_ROOT}
       - name: Reconfigure git to use HTTP authentication
         run: >
           git config --global url."https://github.com/".insteadOf
@@ -55,7 +56,7 @@ jobs:
       - name: Npm packages is installing
         run: yarn install
       - name: Clean android build cache
-        run:  (cd android && gradle cleanBuildCache)
+        run: (cd android && gradle cleanBuildCache)
       - name: Removing example node_modules
         run: (cd example && rm -rf node_modules)
       - name: Removing example package-lock.json
