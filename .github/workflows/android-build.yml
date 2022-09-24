@@ -44,6 +44,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.17.0
+      - name: Install React Native
+        run:  npm uninstall -g react-native-cli @react-native-community/cli
       - name: Removing node_modules
         run: rm -rf node_modules
       - name: Removing package-lock.json
