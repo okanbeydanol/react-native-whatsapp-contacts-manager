@@ -29,8 +29,10 @@ jobs:
           persist-credentials: false
       - shell: bash
         run: mkdir toolchains
-      - name: specify NDK
-        run: sudo echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;25.1.8937393"
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r21e
+      - runs: ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
       - name: Reconfigure git to use HTTP authentication
         run: >
           git config --global url."https://github.com/".insteadOf
