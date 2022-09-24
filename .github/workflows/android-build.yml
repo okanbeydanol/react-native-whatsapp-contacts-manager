@@ -51,8 +51,6 @@ jobs:
         run: yarn install
       - name: Clean android build cache
         run:  (cd android && gradle cleanBuildCache)
-      - name: Gradlew build
-        run: (cd android && ./gradlew build --no-daemon)
       - name: Removing example node_modules
         run: (cd example && rm -rf node_modules)
       - name: Removing example package-lock.json
