@@ -1,0 +1,38 @@
+name: Release Android
+on:
+  push:
+    branches:
+      - github-action
+jobs:
+  build:
+    name: Build AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.17.0
+      - name: Removing node_modules
+        run: rm -rf node_modules
+      - name: Removing package-lock.json
+        run: rm -rf package-lock.json
+      - name: Npm cache verifying
+        run: npm cache verify
+      - name: Npm packages is instaling
+        run: yarn install

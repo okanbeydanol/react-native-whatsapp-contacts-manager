@@ -6,7 +6,12 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "purge:js": "rm -rf node_modules && rm -rf package-lock.json && npm cache verify",
+    "purge:android": "(cd android && ./gradlew --stop) && rm -rf ~/.gradle/caches/ android/app/build",
+    "purge:android:refresh-dependencies": "(cd android && ./gradlew clean) && (cd android && gradle cleanBuildCache) && (cd android && ./gradlew build --refresh-dependencies)",
+    "purge:install": "yarn install",
+    "purge": "npm run purge:js && npm run purge:android && npm run purge:install && npm run purge:android:refresh-dependencies"
   },
   "dependencies": {
     "react": "16.13.1",

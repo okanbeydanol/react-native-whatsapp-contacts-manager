@@ -29,7 +29,11 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods"
+    "bootstrap": "yarn example && yarn && yarn pods",
+    "purge:js": "rm -rf node_modules && rm -rf package-lock.json && npm cache verify",
+    "purge:android": "(cd android && gradle cleanBuildCache) ",
+    "purge:install": "yarn install",
+    "purge": "npm run purge:js && npm run purge:android && npm run purge:install"
   },
   "keywords": [
     "react-native",
