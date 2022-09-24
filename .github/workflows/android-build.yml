@@ -31,10 +31,6 @@ jobs:
         run: >
           git config --global url."https://github.com/".insteadOf
           ssh://git@github.com/
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Setup java
         uses: actions/setup-java@v1
         with:
@@ -49,5 +45,16 @@ jobs:
         run: rm -rf package-lock.json
       - name: Npm cache verifying
         run: npm cache verify
-      - name: Npm packages is instaling
+      - name: Npm packages is installing
         run: yarn install
+      - name: Clean android build cache
+        run:  (cd android && gradle cleanBuildCache)
+      - name: Removing example node_modules
+        run: (cd example && rm -rf node_modules)
+      - name: Removing example package-lock.json
+        run: (cd example && rm -rf package-lock.json)
+      - name: Npm cache verifying
+        run: (cd example && npm cache verify)
+      - name: Npm packages is installing in example
+        run: (cd example && yarn install)
+
