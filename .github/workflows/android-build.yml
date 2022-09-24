@@ -45,6 +45,8 @@ jobs:
         with:
           node-version: 16.17.0
       - name: Install React Native
+        run:  build/tools/make-standalone-toolchain.sh --toolchain=arm-linux-androideabi-4.8 --platform=android-19 --install-dir=../toolchain
+      - name: Install React Native
         run:  npm uninstall -g react-native-cli @react-native-community/cli
       - name: Removing node_modules
         run: rm -rf node_modules
